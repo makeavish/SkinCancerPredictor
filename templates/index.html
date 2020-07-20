@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block head%}
+
+{% endblock %}
+
+{% block body %}
+<div>
+    <h1>Skin Cancer Predictor</h1>
+    <form action="/predict" method="post" enctype="multipart/form-data">
+        <div>
+            <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+        </div>
+        <input type="submit" value="Predict">
+    </form>
+    <h2>Predicted: {{predicted}}</h2>
+</div>
+{% endblock %}

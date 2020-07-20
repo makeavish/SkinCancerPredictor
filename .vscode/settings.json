@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "/Users/makeavish786/anaconda3/envs/skin_cancer/bin/python3.8",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
+}
