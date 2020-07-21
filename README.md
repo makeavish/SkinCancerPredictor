@@ -29,7 +29,7 @@ $ git clone https://github.com/makeavish/SkinCancerPredictor
 $ cd SkinCancerPredictor
 
 # Run the app
-$ python3 app.py host port debug
+$ python3 app.py [host] [port] [debug]
 ```
 
 Arguments are optional
