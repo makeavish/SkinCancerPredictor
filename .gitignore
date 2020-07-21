@@ -1,5 +1,6 @@
 # ignore all logs
 *.log
+
 # ignore personal settings
 .vscode
 .DS_Store
