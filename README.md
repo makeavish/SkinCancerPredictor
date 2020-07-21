@@ -37,23 +37,28 @@ $ python3 app.py
 ### Using predict function
 
 **Request** : `POST /predict`
+
 **Body** : form-data (key: file, value: image file of format .png, .jpg, .jpeg)
 
-#### Success response
+### Success response
 
 **Code** : `200`
+
 **Body** : html page with benign/malignment
 
 ### Error Response
 
 **Code** : `400`
+
 **Body** : Json
 ```
 {
   "message": "No image selected for uploading"
 }
 ```
+
 or
+
 ```
 {
   "message": "Incorrect image format selected for uploading"
@@ -61,4 +66,5 @@ or
 ```
 
 ## Todo
+
 - Generate image preview
