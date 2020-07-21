@@ -10,11 +10,17 @@ Create a [virtual env](https://docs.python.org/3/tutorial/venv.html) or [conda e
 
 ### Requirements
 
-- Python 3.8
-- Flask
-- Numpy
-- Keras(Tf)
-- Gevent
+- setuptools>=41.0.0
+- scipy==1.4.1
+- Flask>=1.1.2
+- gunicorn>=20.0.4
+- numpy>=1.19.0
+- Keras>=2.4.3
+- tensorflow-cpu>=2.2.0
+- gevent>=20.6.2
+- Werkzeug>=1.0.1
+- MarkupSafe>=1.1.1
+- Jinja2>=2.11.2
 
 ## How To Use
 

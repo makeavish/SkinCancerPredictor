@@ -81,15 +81,15 @@ class InvalidUsage(Exception):
         rv['message'] = self.message
         return rv
 
-
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-
+# To only allow images
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 # Routes
+
 @app.route('/', methods=['GET'])
 def index():
     # Main page
