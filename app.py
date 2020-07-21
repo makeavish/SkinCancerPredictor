@@ -12,7 +12,7 @@ from keras.models import load_model
 from keras.preprocessing.image import img_to_array,load_img
 
 # Flask utils
-from flask import Flask, redirect, url_for, request, render_template
+from flask import Flask, redirect, url_for, request, render_template, jsonify
 from werkzeug.utils import secure_filename
 from gevent.pywsgi import WSGIServer
 
@@ -47,6 +47,25 @@ def pred(img_path):
     else:
         return "malignant"
 
+class InvalidUsage(Exception):
+    status_code = 400
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
+def allowed_file(filename):
+	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/', methods=['GET'])
 def index():
@@ -54,22 +73,31 @@ def index():
     return render_template('index.html', predicted='waiting to run')
     # return ""
 
+@app.errorhandler(InvalidUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
 
 @app.route('/predict', methods=['POST'])
 def upload():
     if request.method == 'POST':
         # Get the file from post request
-        f = request.files['file']
+        file = request.files['file']
+        if file.filename == '':
+            raise InvalidUsage('No image selected for uploading',status_code=400)
+        if file and allowed_file(file.filename):
+            # Save the file to ./uploads
+            basepath = os.path.dirname(__file__)
+            file_path = os.path.join(
+                basepath, 'uploads', secure_filename(file.filename))
+            file.save(file_path)
 
-        # Save the file to ./uploads
-        basepath = os.path.dirname(__file__)
-        file_path = os.path.join(
-            basepath, 'uploads', secure_filename(f.filename))
-        f.save(file_path)
-
-        # Make prediction
-        preds = pred(file_path)
-        return render_template('index.html', predicted=preds)
+            # Make prediction
+            preds = pred(file_path)
+            return render_template('index.html', predicted=preds)
+        else:
+            raise InvalidUsage('Incorrect image format selected for uploading',status_code=400)
     return None
 
 
