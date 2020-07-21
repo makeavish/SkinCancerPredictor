@@ -29,10 +29,17 @@ $ git clone https://github.com/makeavish/SkinCancerPredictor
 $ cd SkinCancerPredictor
 
 # Run the app
-$ python3 app.py
+$ python3 app.py host port debug
 ```
 
-App will be running on localhost:5000/
+Arguments are optional
+
+**Default values**
+```
+host = localhost
+port = 5000
+debug = False
+```
 
 ## API
 

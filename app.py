@@ -18,15 +18,33 @@ from gevent.pywsgi import WSGIServer
 # Define a flask app
 app = Flask(__name__)
 
-# Model saved with Keras model.save()
-MODEL_PATH = 'models/finalModel.h5'
+#default config
+host = 'localhost'
+port = 5000
+debug = False
+
+# CLI arguments of custom config
+try:
+    host = sys.argv[1]
+    port = sys.argv[2]
+    debug = sys.argv[3]
+except:
+    pass
+
+# Model saved with Keras
+MODEL_PATH_WEIGHTS = 'models/finalModel.h5'
+MODEL_PATH_JSON = 'models/model_to_json.json'
 
 # loading the model
-with open('models/model_to_json.json', 'r') as json_file:
-    loaded_model_json = json_file.read()
-    model = model_from_json(loaded_model_json)
-    model.load_weights(MODEL_PATH)
-    print('Model loaded. Check http://127.0.0.1:5000/')
+try:
+    with open(MODEL_PATH_JSON, 'r') as json_file:
+        loaded_model_json = json_file.read()
+        model = model_from_json(loaded_model_json)
+        model.load_weights(MODEL_PATH_WEIGHTS)
+        print('Model loaded. Check http://%s:%s/' % (host,port))
+except Exception as e:
+    print('Issue with importing model, \n\n'+ str(e) +'\n\nStopping app..')
+    sys.exit()
 
 
 # Prediction using model
@@ -110,4 +128,4 @@ def handle_invalid_usage(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host, port, debug)
